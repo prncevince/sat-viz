@@ -1,0 +1,33 @@
+digraph {
+
+graph [layout = 'neato',
+       outputorder = 'edgesfirst',
+       bgcolor = 'white']
+
+node [fontname = 'Helvetica',
+      fontsize = '10',
+      shape = 'circle',
+      fixedsize = 'true',
+      width = '0.5',
+      style = 'filled',
+      fillcolor = 'aliceblue',
+      color = 'gray70',
+      fontcolor = 'gray50']
+
+edge [fontname = 'Helvetica',
+     fontsize = '8',
+     len = '1.5',
+     color = 'gray80',
+     arrowsize = '0.5']
+
+  '1' [label = 'container', image = 'img/container.png'] 
+  '2' [label = 'docker', image = 'img/docker.png'] 
+  '3' [label = 'docker-hub', image = 'img/docker-hub.png'] 
+  '4' [label = 'hdf5', image = 'img/hdf5.png'] 
+  '5' [label = 'npm', image = 'img/npm.png'] 
+  '6' [label = 'renv', image = 'img/renv.png'] 
+  '7' [label = 'renv-svg', image = 'img/renv.svg'] 
+  '8' [label = 'pcf', image = 'img/pcf.png'] 
+  '1'->'2' 
+  '2'->'1' 
+}

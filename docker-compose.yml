@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  base:
+    build: .
+    image: savi:$npm_package_version
+  base-volume:
+    build:
+      context: .
+      dockerfile: vol.Dockerfile
+    image: savi-vol:$npm_package_version
+    ports:
+      - target: 3838
+        published: 80
+        mode: host
+    volumes:
+      - ./data:/app/savi/data
+  base-data:
+    build:
+      context: .
+      dockerfile: data.Dockerfile
+    image: savi-data:$npm_package_version
+    ports:
+      - target: 3838
+        published: 80
+        mode: host
+  dev:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    image: savi-dev:$npm_package_version
+    ports:
+      - target: 3838
+        published: 80
+        mode: host
+

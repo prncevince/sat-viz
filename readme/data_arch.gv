@@ -1,0 +1,43 @@
+digraph {
+  
+  graph [layout = dot]
+  
+  node [shape = rectangle, style = filled, fillcolor = Linen]
+  
+  data1 [label = 'input', shape = tab, fillcolor = seagreen1]
+  data1_1[label = 'geo_df', shape = cylinder, fillcolor = aquamarine, fontsize=10]
+  data1_2[label = 'data_cases', shape = cylinder, fillcolor = cadetblue1, fontsize=10]
+  data1_3[label = 'simdates', shape = cylinder, fillcolor = lightslateblue, fontsize=10]
+  
+  
+  data2[label = 'output', shape = tab, fillcolor = tomato]
+  data2_1[label = 'LightPolys', shape = tab, fillcolor = orange]
+  data2_2[label = 'PriSys', shape = tab, fillcolor = mediumorchid1]
+  data2_3[label = 'PriSys_Outage', shape = tab, fillcolor = orangered]
+  data2_4[label = 'SecSys', shape = tab, fillcolor = plum]
+  
+  data2_1_1[label = 'GeoID[1]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_2_1[label = 'GeoID[1]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_3_1[label = 'GeoID[1]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_4_1[label = 'GeoID[1]', shape = cylinder, fillcolor = gold, fontsize=8]
+  
+  data2_1_2[label = 'GeoID[.]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_2_2[label = 'GeoID[.]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_3_2[label = 'GeoID[.]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_4_2[label = 'GeoID[.]', shape = cylinder, fillcolor = gold, fontsize=8]
+  
+  data2_1_3[label = 'GeoID[N]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_2_3[label = 'GeoID[N]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_3_3[label = 'GeoID[N]', shape = cylinder, fillcolor = gold, fontsize=8]
+  data2_4_3[label = 'GeoID[N]', shape = cylinder, fillcolor = gold, fontsize=8]
+  
+  # edge definitions with the node IDs
+  {data1} -> {data1_1}
+  {data1} -> {data1_2}
+  {data1} -> {data1_3}
+  
+  {data2} -> {data2_1} -> {data2_1_1,data2_1_2,data2_1_3}
+  {data2} -> {data2_2} -> {data2_2_1,data2_2_2,data2_2_3}
+  {data2} -> {data2_3} -> {data2_3_1,data2_3_2,data2_3_3}
+  {data2} -> {data2_4} -> {data2_4_1,data2_4_2,data2_4_3}
+} 
