@@ -227,7 +227,8 @@ body <- dashboardBody(
         )
       )
     )
-  )
+  ),
+  tags$script(type = "text/javascript", src = "js/extra.js")
 )
 # page ----
 ui <- dashboardPage(
