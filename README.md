@@ -13,7 +13,7 @@ The **S**atellite **A**ccess **Vi**sualization web app
 
 ## SAVi Data Diagram
 
-The below diagram is the data hierarchy within SAVi.  As we utilize the HDF5 file type, we need to have this clearly documented.  Top levels of the hierarchy are input and output.  Input contains data about the geolocations and the different output objects available.  Output contains different datatypes and the respective objects for each geolocation.  Right now, the GeoID is built into a string within the case dataframes.
+The below diagram is the data hierarchy within SAVi. Top levels of the hierarchy are input and output. Input contains data about the geolocations and the different output objects available. Output contains different datatypes and the respective objects for each geolocation.
 
 ![](readme/data_arch.svg)
 
