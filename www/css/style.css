@@ -7,6 +7,19 @@ input[type="number"] {
   padding: 0;
 }
 
+/* plotly mode bar */
+.tab-pane[data-value="Map"] .js-plotly-plot .plotly .modebar,
+.tab-pane[data-value="Data"] .js-plotly-plot .plotly .modebar {
+  bottom: 9px !important;
+  top: unset !important;
+}
+
+.tab-pane[data-value="Map"] .modebar-container,
+.tab-pane[data-value="Data"] .modebar-container {
+  bottom: 0px;
+  top: unset !important;
+}
+
 /* Customize fonts */
 body, label, input, button, select { 
   font-family: 'Helvetica Neue', Helvetica;
@@ -20,6 +33,7 @@ h1, h2, h3, h4 { font-weight: 400; }
   padding: 0 0 0 0;
 }
 
+/* Absolute Panels */
 #controls {
   /* Appearance */
   background-color: white;
@@ -28,7 +42,7 @@ h1, h2, h3, h4 { font-weight: 400; }
   /* Fade out while not hovering */
   opacity: 0.65;
   zoom: 0.9;
-  transition: opacity 500ms 1s;
+  transition: opacity 0ms 0s;
 }
 #controls:hover {
   /* Fade in while hovering */
