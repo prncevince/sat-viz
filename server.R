@@ -151,22 +151,32 @@ update_plot_date_range <- function(daterange,rv,session){
   rv$upxmin <- rv$xmin
   rv$upxmax <- rv$xmax
   #set plot margin
-  pmargin <- list(t = 46, r = 7, b = 80, l = 37)
+  # pmargin <- list(t = 46, r = 7, b = 80, l = 37)
+  pmargin <- list(t = 42.994497, r = 7.305936, b = 84.5, l = 50)
   x <- list(
     type = "date",
     title = list(text = "Day (Date)",
                  font = list(size = 14.61187)),
     range = c(as.numeric(rv$start_day) * ms_d + ms_h, as.numeric(rv$end_day) * ms_d + ms_h),
+    showgrid = TRUE,
+    showline = FALSE,
+    linecolor = "rgba(0,0,0,0)",
+    gridcolor = "rgba(255,255,255,1)",
     ticktext = rv$date_vec,
     tickangle = -45,
-    tickfont = list(size=11.6895)
+    tickfont = list(size = 11.6895, color = "rgba(77,77,77,1)"),
+    ticks = "outside"
   )
   y <- list(
     title = list(text = "Local Time (Hr)",
                  font = list(size = 14.61187)),
     range = c(0,24),
+    showgrid = TRUE,
+    gridcolor = "rgba(255,255,255,1)",
     tickvals = seq(0,24,4),
-    tickfont = list(size=11.6895)
+    tickfont = list(size=11.6895, color = "rgba(77,77,77,1)"),
+    ticks = "outside",
+    fixedrange = TRUE
   )
   plotlyProxy("comb_map", session) %>%
     plotlyProxyInvoke("relayout", list(xaxis = x, yaxis=y, margin = pmargin))
