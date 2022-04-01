@@ -1,9 +1,11 @@
-library(DT)
-library(lazyeval)
-library(leaflet)
-library(plotly)
-library(shinycssloaders)
-library(shinydashboard)
+suppressPackageStartUpMessages({
+  library(DT)
+  library(lazyeval)
+  library(leaflet)
+  library(plotly)
+  library(shinycssloaders)
+  library(shinydashboard)
+})
 
 # TODO: suspendwhilehidden = FALSE will ensure that everything is loaded at once - but this may sacrifice performance
 
@@ -46,13 +48,12 @@ sb_comb2 <- sidebarMenu(
       12, align = "left", offset = 0,
       checkboxGroupInput(
         inputId = "selector", label = "Select Traces:",
-        choices = c("PriSys", "PriSysOut", "SecSys", "LightPolys"),
+        choiceNames = c("PriSys", "PriSysOut", "SecSys", "Day / Night"),
+        choiceValues = c("PriSys", "PriSysOut", "SecSys", "LightPolys"),
         selected = c("PriSys", "PriSysOut", "SecSys", "LightPolys"),
         inline=TRUE
       ),
-      tags$style("#selector {
-                    font-size:16px;
-      }")
+      tags$style("#selector {font-size:16px;}")
     )
   ),
   fluidRow(
@@ -60,7 +61,8 @@ sb_comb2 <- sidebarMenu(
       12, align = "left", offset = 0, 
       actionButton(
         "btn_sb_traces_comb_plot", "Filter", 
-        style = "color: #fff; background-color: #99aa37; border-color: #2e6da4; height:30px; font-size:16px")
+        style = "color: #fff; background-color: #99aa37; border-color: #2e6da4; height:30px; font-size:16px"
+      )
     )
   )
 )
@@ -94,7 +96,7 @@ sb_tgt <- sidebarMenu(
     )
   )
 )
-# sidebar latlot ----
+# sidebar latlon ----
 sb_latlon <- sidebarMenu(
   id = "latlon_menu",
   tags$style(type = "text/css", ".form-control.shiny-bound-input {height: 30px;}"),
@@ -156,7 +158,8 @@ sidebar <- dashboardSidebar(
 # body ----
 body <- dashboardBody(
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "css/style.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "css/style.css"),
+    tags$script(src = "js/keep-alive.js")
   ),
   mainPanel(
     width = 12,
@@ -178,9 +181,8 @@ body <- dashboardBody(
           absolutePanel(
             id = "controls", class = "panel panel-default", fixed = TRUE,
             draggable = TRUE, top = "auto", left = "auto", right = 10, bottom = 5,
-            width = 700, height = 350,
-            h4("Plot Preview"),
-            plotlyOutput("comb_map", height = 300) %>% withSpinner(type = 4)
+            width = 700, height = 400,
+            plotlyOutput("comb_map", height = 390) %>% withSpinner(type = 4)
           ),
           absolutePanel(
             id = "mouse_coord", class = "panel panel-default", fixed = TRUE,
@@ -195,7 +197,7 @@ body <- dashboardBody(
         div(
           class = "data",
           fluidRow(
-            plotlyOutput("comb_data", height = 400) %>% withSpinner(type = 4)
+            plotlyOutput("comb_data", height = 900) %>% withSpinner(type = 4)
           ),
           tabsetPanel(
             id = "data-nav",
