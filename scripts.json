@@ -1,0 +1,9 @@
+"scripts": {
+    "docker:start": "sudo systemctl start docker.service",
+    "image:compress": "docker save save | gzip > save.$npm_package_version.tar.gz",
+    "preimage:deploy": "sudo docker tag savi-data:$npm_package_version {url}/savi/savi:$npm_package_version",
+    "image:deploy": "sudo docker push {url}/savi/savi:$npm_package_version",
+    "image:import": "docker import savi.$npm_package_version.tar.gz savi:$npm_package_version",
+    "predeploy:image:demo": "sudo docker tag savi-demo-data:$npm_package_version {url}/savi/savi-data:$npm_package_version",
+    "image:deploy:demo": "sudo docker push {url}/savi/sav-data:$npm_package_version",
+}
