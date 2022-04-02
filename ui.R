@@ -1,4 +1,4 @@
-suppressPackageStartUpMessages({
+suppressPackageStartupMessages({
   library(DT)
   library(lazyeval)
   library(leaflet)
@@ -197,7 +197,7 @@ body <- dashboardBody(
         div(
           class = "data",
           fluidRow(
-            plotlyOutput("comb_data", height = 900) %>% withSpinner(type = 4)
+            plotlyOutput("comb_data", height = 600) %>% withSpinner(type = 4)
           ),
           tabsetPanel(
             id = "data-nav",

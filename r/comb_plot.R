@@ -1,4 +1,4 @@
-suppressPackageStartUpMessages({
+suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
   library(plotly)
@@ -90,7 +90,7 @@ comb_plot <- function(df_acc, df_acc_sec, df_out, df_tgt, id, date, lightpoly, t
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     labs(
       title = paste(
-        "Access Windows for ID:", id, "- Long:", df_tgt %>% filter(geoID == id) %>% pull(lon), 
+        "Access Windows for ID:", id, "Long:", df_tgt %>% filter(geoID == id) %>% pull(lon), 
         "Lat:", df_tgt %>% filter(geoID == id) %>% pull(lat)
       )
     )
@@ -158,7 +158,7 @@ comb_plot <- function(df_acc, df_acc_sec, df_out, df_tgt, id, date, lightpoly, t
   pl$x$layout$yaxis$fixedrange <- TRUE # restrict y axis zoom
   pl$x$layout$dragmode <- 'pan'
   pl$x$layout$title$x <- 0.5
-  pl$x$config$modBarButtonsToRemove <- c("select2d", "lasso2d")
+  pl$x$config$modeBarButtonsToRemove <- c("select2d", "lasso2d")
   pl$x$config$displaylogo <- FALSE
   pl$x$config$scrollZoom <- TRUE
   len_tr <- length(pl$x$data)

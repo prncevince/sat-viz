@@ -24,7 +24,7 @@ function keepAlive(m, ms = 1000*50) {
   }
   function resetTimer() {
     clearTimeouts(t);
-    t = setTimesouts(x, ms);
+    t = setTimeouts(x, ms);
   }
   function setTimeouts(x, ms) {
     let t0 = []

@@ -318,7 +318,7 @@ server <- function(input, output, session) {
   # EVENTS ----
   # event keep_alive ----
   # keeps the socket alive based on www/js/keep-alive.js
-  observeEvent(input$keep_alive, sessionCustomMessage('keep-alive', 'alive!'))
+  observeEvent(input$keep_alive, session$sendCustomMessage('keep-alive', 'alive!'))
   # event map_bounds ----
   # change what is in the datatable based on map bounds
   data_map <- reactive({
