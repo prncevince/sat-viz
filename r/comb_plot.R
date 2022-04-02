@@ -1,8 +1,10 @@
-library(dplyr)
-library(ggplot2)
-library(plotly)
-library(viridis)
-
+suppressPackageStartUpMessages({
+  library(dplyr)
+  library(ggplot2)
+  library(plotly)
+  library(viridis)
+})
+  
 #' Create a SAVi combplot
 #'
 #' @param df_acc A data frame. Contains multiple variables of access data.
@@ -81,30 +83,15 @@ comb_plot <- function(df_acc, df_acc_sec, df_out, df_tgt, id, date, lightpoly, t
   # plot savi data
   # TODO: suppress warning of "Ignoring unknown aesthetics: text"
   p <- ggplot() +
-    
-    #color scale for line segments
     scale_color_viridis() +
-    # scale_colour_viridis(breaks=c(0,25,50,75,90),labels=c(0,25,50,75,90),limits=c(0,90))+
-    
-    #y axis limits/breaks/config
     scale_y_continuous(name="Local Time (Hr)", limits = c(0, 24), breaks = seq(0, 24, by = 4), expand = c(0,0)) +
-    
-    #x axis limits/breaks/config
     scale_x_date(name="Day (Date)", date_labels = "%F", date_breaks = "1 day", expand = c(0,0)) +
-    #scale_x_continuous(name="Day (Date)",breaks = df_date$day_num, labels = df_date$date, expand = c(0, 0)) +
-    
-    #plot coordinate configuration
     coord_cartesian(xlim = c(df_date$date[xmin], df_date$date[xmax]), ylim = c(0, 24)) +
-    #coord_cartesian(ylim = c(0, 24), xlim = c(xmin, xmax)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    
-    #plot title
     labs(
       title = paste(
-        "Access Windows for target located at Long:",
-        df_tgt %>% filter(geoID == id) %>% pull(lon),
-        "Lat:", df_tgt %>% filter(geoID == id) %>% pull(lat),
-        "ID: ", id
+        "Access Windows for ID:", id, "- Long:", df_tgt %>% filter(geoID == id) %>% pull(lon), 
+        "Lat:", df_tgt %>% filter(geoID == id) %>% pull(lat)
       )
     )
   
@@ -114,6 +101,15 @@ comb_plot <- function(df_acc, df_acc_sec, df_out, df_tgt, id, date, lightpoly, t
         geom_polygon(data = lightpoly[[1]], aes(x = day_num - 1 + date, y = dusk), fill = "blue", alpha = 0.2) +
         geom_polygon(data = lightpoly[[2]], aes(x = day_num - 1 + date, y = dawn), fill = "blue", alpha = 0.2) +
         geom_polygon(data = lightpoly[[3]], aes(x = day_num - 1 + date, y = time), fill = "orange", alpha = 0.2)
+    }
+    if ("PriSysOut" %in% traces){
+      p <- p + geom_segment(
+        data = df_out, colour = "red", size = 1.5,
+        aes(
+          x = end_date_frac - 1 + date, xend = end_date_frac_next - 1 + date,
+          y = acc, yend = acc_next
+        )
+      )
     }
     #bottom layer - secondary system
     if ("SecSys" %in% traces){
@@ -125,16 +121,6 @@ comb_plot <- function(df_acc, df_acc_sec, df_out, df_tgt, id, date, lightpoly, t
         size = 1.75
       )
     }
-    
-    if ("PriSysOut" %in% traces){
-      p <- p +
-        geom_segment(
-          data = df_out,
-          aes(x = end_date_frac - 1 + date, xend = end_date_frac_next - 1 + date,
-              y = acc, yend = acc_next),
-          colour = "red", size = 1.5
-        )
-    }
     if ("PriSys" %in% traces){
       p <- p + 
         geom_segment(
@@ -142,7 +128,7 @@ comb_plot <- function(df_acc, df_acc_sec, df_out, df_tgt, id, date, lightpoly, t
           aes(
             x = end_date_frac - 1 + date, xend = end_date_frac_next - 1 + date,
             y = acc, yend = acc_next,
-            colour = geo,
+            colour = round(geo, digits = 0), # rounding generates less color traces = faster map execution
             text = sprintf(
               "Duration: %.2f hr<br>Geo Range: %.2f-%.2f<br>Start Geo: %.2f<br>Stop Geo: %.2f",
               dur, min_geo, max_geo, geo, geo_next, end_date_frac
@@ -157,18 +143,29 @@ comb_plot <- function(df_acc, df_acc_sec, df_out, df_tgt, id, date, lightpoly, t
   
   ms_d <- 60*60*24*10^3
   ms_h <- 1*60*60*10^3
-  #format x-axis to be date-numeric
+  # format x-axis to be date-numeric
   for (i in 1:length(pl$x$data)) {
     pl$x$data[[i]]$x <- suppressWarnings(
-      as.numeric(pl$x$data[[i]]$x) * ms_d + ms_h
+      as.numeric(pl$x$data[[i]]$x) * ms_d
     )
   }
   pl$x$layout$xaxis$autorange <- FALSE
-  pl$x$layout$xaxis$range <- as.numeric(pl$x$layout$xaxis$range) * ms_d + ms_h
+  pl$x$layout$xaxis$range <- as.numeric(pl$x$layout$xaxis$range) * ms_d
   pl$x$layout$yaxis$autorange <- FALSE
   pl$x$layout$yaxis$tickmode <- "array"
   pl$x$layout$yaxis$range <- c(0,24)
   pl$x$layout$yaxis$tickvals <- seq(0,24,4)
-  pl$x$layout$yaxis$fixedrange <- TRUE       #restrict y axis zoom
+  pl$x$layout$yaxis$fixedrange <- TRUE # restrict y axis zoom
+  pl$x$layout$dragmode <- 'pan'
+  pl$x$layout$title$x <- 0.5
+  pl$x$config$modBarButtonsToRemove <- c("select2d", "lasso2d")
+  pl$x$config$displaylogo <- FALSE
+  pl$x$config$scrollZoom <- TRUE
+  len_tr <- length(pl$x$data)
+  # Legend & Colorbar
+  pl$x$data[[len_tr]]$marker$colorbar$title <- "Geo"
+  pl$x$layout$showlegend <- TRUE
+  pl$x$data[[4]]$showlegend <- TRUE # show outage windows
+  pl$x$data[[4]]$name <- "Outage"
   return(pl)
 }
