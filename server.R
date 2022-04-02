@@ -2,15 +2,17 @@ source("r/chron_plot.R")
 source("r/comb_plot.R")
 source("r/input.R")
 
-library(data.table)
-library(dplyr)
-library(DT)
-library(htmlwidgets)
-library(leaflet)
-library(maps)
-library(plotly)
-library(rhdf5)
-library(sf)
+suppressPackageStartupMessages({
+  library(data.table)
+  library(dplyr)
+  library(DT)
+  library(htmlwidgets)
+  library(leaflet)
+  library(maps)
+  library(plotly)
+  library(rhdf5)
+  library(sf)
+})
 
 # OBJECTS ----
 # target data ----
@@ -117,8 +119,8 @@ table_out <- function(group, rv) {
 date_range_rv_update <- function(daterange, rv, date_df) {
   date_fil <- date_df[which(date_df$date >= daterange[1] & date_df$date <= daterange[2]), ]
   row.names(date_fil) <- NULL
-  xmin <- min(date_fil$daynum)
-  xmax <- max(date_fil$daynum)
+  xmin <- suppressWarnings(min(date_fil$daynum))
+  xmax <- suppressWarnings(max(date_fil$daynum))
   start_day <- date_fil$date[1]
   end_day <- date_fil$date[nrow(date_fil)]
   rv$xmin <- xmin
@@ -314,6 +316,9 @@ server <- function(input, output, session) {
   output$chron_chron <- renderPlotly(chron, quoted = T)
   outputOptions(output, "chron_chron", suspendWhenHidden = TRUE, priority=10)
   # EVENTS ----
+  # event keep_alive ----
+  # keeps the socket alive based on www/js/keep-alive.js
+  observeEvent(input$keep_alive, sessionCustomMessage('keep-alive', 'alive!'))
   # event map_bounds ----
   # change what is in the datatable based on map bounds
   data_map <- reactive({
