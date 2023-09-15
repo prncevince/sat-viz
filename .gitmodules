@@ -1,0 +1,3 @@
+[submodule ".github/workflows/huggingface"]
+	path = .github/workflows/huggingface
+	url = git@hf.co:spaces/prncevince/sat-viz

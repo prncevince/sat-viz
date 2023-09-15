@@ -12,6 +12,7 @@
     "build:image": "COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build base",
     "build:image:data": "COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=0 docker-compose build --build-arg TAG=$npm_package_version base-data",
     "build:image:volume": "COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build --build-arg TAG=$npm_package_version base-volume",
+    "build:image:huggingface": "COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=0 docker-compose build huggingface",
     "build:image:old": "./install.sh",
     "build:data": "run-s build:data:*",
     "build:data:rdata": "Rscript build/data/rdata.R",
