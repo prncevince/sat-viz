@@ -1,0 +1,24 @@
+name: Keep Hugging Face Space Container Alive
+on:
+  schedule:
+    - cron: '0 4 * * 0,4'
+  workflow_dispatch:
+jobs:
+  ping-hf-space:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: GET Request
+        run: |
+          curl -w @- -o /dev/null -s "https://prncevince-sat-viz.hf.space/" <<'EOF'
+             time_namelookup:  %{time_namelookup}\n
+                time_connect:  %{time_connect}\n
+             time_appconnect:  %{time_appconnect}\n
+            time_pretransfer:  %{time_pretransfer}\n
+               time_redirect:  %{time_redirect}\n
+          time_starttransfer:  %{time_starttransfer}\n
+                             ----------\n
+                  time_total:  %{time_total}\n
+          EOF
+
